@@ -73,10 +73,57 @@ func (c Car) Stop() string {
 }
 
 // Interface as a Constant
-func Describe[T Speaker](t T) {
-	fmt.Println(t.Speak())
+// func Describe[T Speaker](t T) {
+// 	fmt.Println(t.Speak())
+// }
+
+// ----------------------------------------------------------------
+
+type Human interface {
+	Walks() string
+	HasMoney() float64
+	IsLegal() bool
 }
 
+type Person struct {
+	Name  string
+	Money float64
+}
+
+func (p Person) Walks() string {
+	return p.Name + " walks"
+}
+
+func (p Person) HasMoney() float64 {
+	return p.Money
+}
+
+func (p Person) IsLegal() bool {
+	return true
+}
+
+// type assertions
+func PrintDetails(i interface{}) {
+	str, ok := i.(string)
+	if ok {
+		fmt.Println("Its string", str)
+	} else {
+		fmt.Println("Not a string")
+	}
+}
+
+func Describe(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Println("Integer", v)
+	case string:
+		fmt.Println("String", v)
+	default:
+		fmt.Println("Unknown type")
+	}
+}
+
+// ----------------------------------------------------------------
 func main() {
 	fmt.Println("Interfaces")
 	// type agnostic : not tied to any specific type
@@ -141,4 +188,28 @@ func main() {
 
 	Describe(dog)
 	Describe(bird)
+
+	// common operations
+
+	// ok so we create an interface with methods then we have a struct and then we have funcs that take in these structs and return these methods and we need to define what the method does in here
+
+	// example on line 80
+	yash := new(Person)
+	yash.Name = "Yash"
+	yash.Money = 3459.02
+	var t Human = Person{Name: "Tom", Money: 200.44}
+	r, ok := t.(Person)
+	if ok {
+		fmt.Println(r.HasMoney())
+	}
+
+	// Type assertions
+	Describe("Hello World")
+	Describe(2024)
+	Describe(42)
+
+	fmt.Println(yash.Walks())
+	fmt.Println(yash.HasMoney())
+	fmt.Println(yash.IsLegal())
+
 }
